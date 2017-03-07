@@ -1,0 +1,187 @@
+.column {
+	display:inline-block;
+	margin: 5px;
+}
+.gradiant-background {
+	background: lightgray; /* For browsers that do not support gradients */
+	background: -webkit-linear-gradient(left top, lightgray, white); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(bottom right, lightgray, white); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(bottom right, lightgray, white); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom right, lightgray, white); /* Standard syntax */
+}
+.selected {
+	background-color:blue;
+	color:white;
+}
+.textBox {
+	border:1px solid black;
+	background: white;
+}
+.panel {
+	border: 3px outset lightgray;
+	padding: 5px;
+	overflow: auto;
+	box-shadow: 2px 2px 5px #888888;
+}
+.panel-button {
+	width:32px;
+	height:32px;
+	cursor:pointer;
+}
+.line {
+	display:inline-block;
+	white-space: nowrap;
+}
+.node {
+	display:inline-block;
+	cursor:pointer;
+	padding:4px;
+}
+.node:hover {
+	background-color:blue;
+	color:white;
+}
+body, html {
+	background: lightgray; /* For browsers that do not support gradients */
+	background: -webkit-linear-gradient(left top, lightgray, white); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(bottom right, lightgray, white); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(bottom right, lightgray, white); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom right, lightgray, white); /* Standard syntax */
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+#wrapper {
+	position:relative; //that's it
+	overflow:hidden; !important;
+}
+
+#left {
+	vertical-align: top;
+	margin-right: 15px;
+}
+#middle {
+	width:94%;
+	height:93%;
+	margin-right:15px;
+}
+#right {
+	vertical-align:top;
+}
+#map-panel {
+	width:100%;
+	height:100%;
+	overflow: auto;
+	background: black;
+}
+#hovered-node {
+	margin-top: 10px;
+	height:45%;
+}
+#selected-node {
+	height:45%;
+}
+
+.tag {
+	border: 1px solid black;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	padding-bottom: 20px;
+	text-align: center;
+	position:absolute;
+	z-index:1;
+	box-shadow: 2px -2px 5px #888888;
+	background: lightgray; /* For browsers that do not support gradients */
+	background: -webkit-linear-gradient(lightgray, white); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(lightgray, white); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(lightgray, white); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(lightgray, white); /* Standard syntax */
+	cursor:pointer;
+	font-size:34px;
+}
+#toolDrawer {
+	width:150px;
+	height:25%;
+	white-space: nowrap;
+	position: absolute;
+	left:-138px;
+}
+#nodeDrawer {
+	width:150px;
+	white-space: nowrap;
+	position: relative;
+	left:34px;
+	height:80%;
+}
+#node-tag {
+	transform: rotate(630deg);
+	transform-origin: left bottom 0;
+	display: inline-block;
+	margin-top: 45px;
+	margin-left: -140px;
+	width: 100px;
+}
+#tool-tag {
+	transform: rotate(90deg);
+	transform-origin: left top 0;
+	display: inline-block;
+	margin-top: 5px;
+	margin-left: 35px;
+	width: 100px;
+}
+#tool-panel {
+	display: inline-block;
+	width:80%;
+	height:100%;
+	vertical-align: top;
+	position: relative;
+	z-index:2;
+}
+#node-panel {
+	display: inline-block;
+	width:100%;
+	height:100%;
+	vertical-align: top;
+	position: relative;
+	z-index:2;
+}
+
+#pencil-panel {
+	margin-left:10px;
+}
+
+#output {
+	vertical-align: top;
+}
+
+#load-window {
+	position:absolute;
+	z-index: 10;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	background-color:rgba(169,169,169,0.9);
+}
+#loading {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 400;
+	height: 100;
+}
+#bar {
+	position: relative;
+	width: 375;
+	height: 50px;
+	border:2px solid black;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+#progress {
+	background-color:red;
+	height: 50px;
+	width:50px;
+}

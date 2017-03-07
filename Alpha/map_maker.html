@@ -1,0 +1,279 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" type="text/css" href="css/media.css" />
+
+<script>
+var selected = '';
+var roomAttributes = [
+	'ascii', 
+	'ascii-color', 
+	'room-name', 
+	'area',
+	'sight', 
+	'sound', 
+	'smell'
+];
+
+var map = {
+	nodes: [],
+	addNode: function (x, y, ascii = 'x', color = 'white', name = '', area = '', sight = '', sound = '', smell = '') {
+		this.nodes[this.nodes.length] = 
+		{
+			node: 
+			{
+				x: x, 
+				y:y, 
+				attributes: {
+					'ascii': ascii, 
+					'ascii-color': color, 
+					'room-name': name, 
+					'area': area,
+					'sight': sight, 
+					'sound': sound, 
+					'smell': smell
+				}
+			}
+		};
+	},
+	getNode: function (point) {
+		for(i=0;i!=this.nodes.length;i++) {
+			if(point.x == this.nodes[i].node.x && point.y == this.nodes[i].node.y) {
+				return this.nodes[i].node;
+			}
+		}
+	},
+	setNode: function (x, y, attribute, value) {
+		for(i=0;i!=this.nodes.length;i++) {
+			if(x == this.nodes[i].node.x && y == this.nodes[i].node.y) {
+				this.nodes[i].node.attributes[attribute] = value;
+				console.log(`${x} - ${y}`);
+			}
+		}
+	}
+};
+
+window.onload = function() {
+	createGrid(100,100);
+}
+
+let counter = 0;
+let y = 0;
+let xPos = 0;
+var line = document.createElement('div');
+line.className = 'line';
+function createGrid(cols, rows) {
+let total = cols * rows;
+
+	console.time("Array initialize");
+	let out = document.getElementById('output');
+	for(let i = total; --i >= 0;) { 
+		updateGrid(cols, rows);
+	}
+	
+
+	let load = document.getElementById('load-window');
+	load.style.display = 'none';
+	setupNodeDrawer();
+	setupTags();
+	
+	console.timeEnd("Array initialize");
+/* let progress = setInterval( function() 
+{
+	if(counter < total) {
+		updateGrid(cols, rows);
+		let progress = document.getElementById('progress');
+		progress.style.width = (counter / total) * 375;
+	}
+	else {
+		let load = document.getElementById('load-window');
+		load.style.display = 'none';
+		setupNodeDrawer();
+		setupTags();
+		clearInterval(progress);
+	}
+}, 0); */
+
+}
+
+function updateGrid(cols, rows) {
+	map.addNode(xPos, y);
+	
+	let node = document.createElement('div');
+	node.className = 'node';
+	node.innerHTML = "x";
+	node.style.color = "white";
+	node.setAttribute('x', xPos);
+	node.setAttribute('y', y);
+
+	//// On mouse over change output coordinates data //////
+	node.addEventListener('mouseover', function(e) {
+		let point = getSelectedNode(e.target);
+		let output = document.getElementById('output');
+		output.innerHTML = 'x:' + point.x + ' - y:' + point.y;
+	});
+	node.addEventListener('click', function(e) {			
+		if(selected === '') {
+			e.target.classList.add('selected');
+			selected = e.target;
+		}
+		else {
+			if(e.target.className.indexOf('selected') === -1) {
+				e.target.classList.add('selected');
+				selected.classList.remove('selected');
+				selected = e.target;
+			}
+		}
+		
+		for (var name in map.getNode(getSelectedNode(e.target)).attributes) {
+			let value = map.getNode(getSelectedNode(e.target)).attributes[name];
+			let elem = document.getElementById(name);
+			elem.innerHTML = value;
+			
+		}
+		
+		selected = e.target;
+	});
+	line.appendChild(node);
+	if(xPos !== cols) {
+		xPos++;
+		counter++;
+	}
+	else {
+		xPos = 0;
+		if(y !== rows) {
+			let element = document.getElementById("map-panel");
+			element.appendChild(line);
+			let breakLine = document.createElement('br');
+			element.appendChild(breakLine);
+			
+			line = document.createElement('div');
+			line.className = 'line';
+		
+			y++;
+			counter++;
+		}
+	}
+}
+
+function setupNodeDrawer() {
+	for (var name in map.nodes[0].node.attributes) {
+		if (typeof map.nodes[0].node.attributes[name] !== 'function') {
+			let outter = document.createElement('div');
+			let label = document.createElement('div')
+			label.innerHTML = name + ':';
+			let text = document.createElement('div');
+			text.id = name;
+			text.className = 'textBox';
+			text.contentEditable = true;
+			text.addEventListener('keyup', function() {
+			if(selected !== '') {
+					let desc = document.getElementById(this.id);
+					let attribute = this.id;
+					let point = getSelectedNode(selected);
+					map.setNode(point.x, point.y, attribute, desc.innerHTML);
+				}
+			});
+			text.addEventListener('blur', function() {
+			if(selected !== '') {
+					console.log("test");
+				}
+			});
+			
+			outter.appendChild(label);
+			outter.appendChild(text);
+			
+			let element = document.getElementById("selected-node");
+			element.appendChild(outter);
+		}
+	}
+}
+
+function setupTags() {
+	let tags = document.getElementsByClassName('tag');
+	Array.from(tags).forEach( function(elem) {
+		elem.addEventListener('click', function(e) { 
+			let parent = document.getElementById(elem.parentNode.id);
+			let leftPos = getComputedStyle(parent).left;
+			let end = -10;
+			let sign = 0;
+			if(leftPos == '-138px') {
+				end = -10;
+				sign = 1;
+			}
+			else {
+				end = -138;
+				sign = 0;
+			}
+			var pos = parseInt(leftPos);
+			var id = setInterval(frame, 5);
+			
+			function frame() {
+				if(pos !== end) {
+					sign ? pos+=2 : pos-=2;
+					parent.style.left = pos + 'px';
+				}
+				else {
+					clearInterval(id);
+				}
+			}
+		});
+	});
+}
+
+function getSelectedNode(target) {
+	let x = target.getAttribute('x') !== undefined ? target.getAttribute('x') : target.x;
+	let y = target.getAttribute('y') !== undefined ? target.getAttribute('y') : target.y;
+	let point = {
+		x: x, 
+		y: y
+	}
+	return point;
+}
+</script>
+</head>
+
+<body>
+<div id="wrapper">
+	<div id="left" class="column">
+		<div id="toolDrawer">
+			<div id="tool-panel" class="panel gradiant-background">
+				<div id="pencil-panel" class="panel panel-button gradiant-background"></div>
+			</div>
+			<div id="tool-tag" class="tag">
+				Tools
+			</div>
+		</div>
+	</div>
+
+	<div id="middle" class="column">
+		<div id="map-panel" class="panel gradiant-background"></div>
+	</div>
+
+	<div id='right' class="column">
+		<div id="nodeDrawer">
+			<div id="node-panel" class="panel gradiant-background">
+				<div id="selected-node" class="panel gradiant-background"></div>
+				<div id="hovered-node" class="panel gradiant-background"></div>
+			</div>
+			<div id="node-tag" class="tag">
+				Nodes
+			</div>
+		</div>
+	</div>
+
+	<br />
+	<div id='output' class="panel gradiant-background">Null</div>
+	
+	<div id ="load-window">
+		<div id="loading" class="gradiant-background">
+			<div id="bar">
+				<div id="progress">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
