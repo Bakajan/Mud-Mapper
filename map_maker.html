@@ -1,0 +1,103 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-type" content="text/html; charset=UTF8">
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" type="text/css" href="css/media.css" />
+
+<script src="js/jscolor.min.js"></script>
+<script src="js/globals.js"></script>  
+<script src="js/map.js"></script>
+<script src="js/tags.js"></script>
+<script src="js/toolDrawer.js"></script>
+<script src="js/nodeDrawer.js"></script>
+
+<script src="js/windowLoad.js"></script>
+<script src="js/windowResize.js"></script>
+</head>
+    
+<body>
+<div id="wrapper">
+	<div id="left" class="column">
+		<div id="toolDrawer">
+			<div id="tool-panel" class="panel gradiant-background">
+				<div id="pencil-panel" class="button panel-button gradiant-background">&#x2710;</div>
+				<br />
+				<button id="color-panel" class="panel-button gradiant-background jscolor {valueElement:null,onFineChange:'setColor(this)'}"></button>
+				<textarea id="ascii-panel" maxlength="1" class="panel-button gradiant-background">.</textarea>
+				<br />
+				<div id="play-panel" class="button panel-button gradiant-background">&#9658;</div>
+			</div>
+			<div id="tool-tag" class="tag">
+				Tools
+			</div>
+		</div>
+	</div>
+    
+	<div id="middle" class="column">
+		<div id="map-panel" class="panel gradiant-background"><canvas tabindex='1' id="map-canvas"></canvas></div>
+	</div>
+    
+	<div id='right' class="column">
+		<div id="nodeDrawer">
+			<div id="node-panel" class="panel gradiant-background">
+				<div id="selected-node" class="panel gradiant-background"><h3>Selected Node</h3></div>
+				<div id="hovered-node" class="panel gradiant-background"><h3>Hovered Node</h3></div>
+			</div>
+			<div id="node-tag" class="tag">
+				Nodes
+			</div>
+		</div>
+	</div>
+    
+	<br />
+	<div id='output-panel' class="panel gradiant-background">
+		<div id="output" class="output-notifier"></div>
+		<div id="selected-tool" class="output-notifier">Tool:</div>
+	</div>
+	
+	<div id ="load-window">
+		<div id="loading" class="gradiant-background">
+			<div id="bar">
+				<div id="progress">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+</div>
+    
+<script src="js/actor.js"></script>
+<script src="js/parser.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/tester.js"></script>
+<script>
+	let screen = new Editor();
+	var canvas = document.getElementById('map-canvas');
+	var previousHoveredNode = null;
+	
+	function init() {
+		var ctx = canvas.getContext('2d');
+
+		canvas.onmousemove = function(e) {
+			screen.mouseMove(e, canvas, ctx);
+		}
+		canvas.onclick = function(e) {
+			screen.click(e, ctx);
+		}
+		canvas.onkeypress = function(e) {
+			screen.keyPress(e, ctx);
+		};
+		canvas.onkeyup = function(e) {
+			screen.keyUp(e, ctx);
+		};
+		
+		screen.render(map);
+		
+		console.timeEnd("Array initialize");
+	}
+
+	function setColor(picker) {
+		selectedColor = picker.toHEXString();
+	}
+</script>
+</body>
+</html>
