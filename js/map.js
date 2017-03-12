@@ -7,7 +7,7 @@ function Map (cols, rows) {
 
 	console.time("Array initialize");
 	for(let i = total; --i >= 0;) { 
-		this.addNode(xPos, y);
+		this.addNode(xPos, y, '.', '#00ff00', 'Room ' + xPos + ':' + y);
 	
 		if(xPos !== cols-1) {
 			xPos++;
