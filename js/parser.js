@@ -168,13 +168,45 @@ function Parser(inputText, actor = null) {
 		help: {
 			action: function(options, actor = null) {
 				if(options[1]) {
-					if(actions.hasOwnProperty(options[1].toLowwerCase()))
+					if(actions.hasOwnProperty(options[1].toLowerCase()))
 						return actions[options[1]].description();
 					else
 						return 'That command doesn\'t exist';
 				}
 				else
 					return 'Available commands: ' + Object.keys(actions).toString();
+			},
+			description: function(command) {
+				return 'Shows a list of help commands.'
+			}
+		},
+		inventory: {
+			action: function(options, actor = null) {
+				if(actor) {
+					if(actor.inventory.length > 0) {
+						let items = [];
+						for(i=0;i!=actor.inventory.length;i++) {
+							items.push(actor.inventory[i]);
+							items.push('');
+						}
+						return items;
+					}
+					else
+						return "Not carrying anything.";
+				}
+				else
+					return "Not carrying anything.";
+			},
+			description: function(command) {
+				return 'Shows inventory.'
+			}
+		},
+		inv: {
+			action: function(options, actor = null) {
+				return actions['inventory'].action(options, actor = null)
+			},
+			action: function(options, actor = null) {
+				return actions['inventory'].description(command)
 			}
 		}
 	}
